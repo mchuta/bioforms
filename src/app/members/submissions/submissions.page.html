@@ -1,0 +1,27 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>
+			Submissions
+		</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list lines="none" mode="md" >
+    <ion-item *ngFor="let submission of submissions">
+      <ion-note slot="start">{{submission.name}}</ion-note>
+      <ion-label>{{submission.datestring}}</ion-label>
+      <ion-badge slot="end" color="medium">{{submission.items.length}}</ion-badge>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" (click)="initiateUpload()">
+      <ion-icon name="cloud-upload"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

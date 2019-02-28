@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Forms
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher #refresherRef slot="fixed" (ionRefresh)="refreshForms()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>  
+  <ion-list lines="inset" mode="md">
+    <ion-item *ngFor="let form of formsService.forms" [routerDirection]="'forward'" [routerLink]="['/members/form', form.id]">
+      <ion-label>{{form.name}}</ion-label>
+      <ion-note slot="end">{{form.email}}</ion-note>
+    </ion-item>
+  </ion-list>
+</ion-content>
