@@ -8,12 +8,24 @@
       </ion-header>
       <ion-content>
         <ion-list>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages | callback: isDisplayable">
+            <ion-item *ngIf="p.url" [routerDirection]="'root'" [routerLink]="[p.url]">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{p.title}}
               </ion-label>
+              <ion-badge slot="end" *ngIf="p.badge >= 0" color="{{p.color}}">
+                {{p.badge}}
+              </ion-badge>
+            </ion-item>
+            <ion-item *ngIf="!p.url" (click)="this[p.click]()">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>
+                {{p.title}}
+              </ion-label>
+              <ion-badge slot="end" *ngIf="p.badge >= 0" color="{{p.color}}">
+                {{p.badge}}
+              </ion-badge>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
