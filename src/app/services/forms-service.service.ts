@@ -48,6 +48,7 @@ export interface FormxItem {
 export interface Formx {
   id: string;
   name: string;
+  owner: string;
   email: string;
   items: FormxItem[];
 }
@@ -65,184 +66,6 @@ export class FormsService {
 
   constructor(private awsService: AwsService, private storage: Storage, private events: Events ) {
 
-  //   this.forms = [{
-  //       'id': '1001',
-  //       'name': 'Form #1',
-  //       'owner': 'Kris M',
-  //       'items': [
-  //         {
-  //           'icon': 'pricetag',
-  //           'name': 'bucket-number',
-  //           'label': 'Bucket #',
-  //           'type': 'integer',
-  //           'min': 1,
-  //           'max': 10,
-  //           'placeholder': 'Enter a number between 1 and 10',
-  //           'required': true,
-  //           'persist': false,
-  //           'dependents': [
-  //             {
-  //             'form': 'larvae-comp',
-  //             'criteria': {
-  //                 minimum: 3,
-  //                 maximum: 6
-  //              }
-  //             }
-  //           ],
-  //           'dependencies': []
-  //         },
-  //         {
-  //           'icon': 'locate',
-  //           'name': 'site-number',
-  //           'label': 'Site #',
-  //           'type': 'integer',
-  //           'min': 1,
-  //           'max': 6  ,
-  //           'placeholder': 'Enter a number between 1 and 6',
-  //           'required': true,
-  //           'persist': false,
-  //           'dependents': [
-  //             {
-  //             'form': 'larvae-comp',
-  //             'criteria': {
-  //                 modulus: 3
-  //              }
-  //             }
-  //           ],
-  //           'dependencies': []
-  //         },
-  //         {
-  //           'icon': 'water',
-  //           'name': 'bucket-fill',
-  //           'label': 'Fill Level',
-  //           'type': 'select',
-  //           'options': [{
-  //               'label': 'Empty',
-  //               'value': 'dry'
-  //             },
-  //             {
-  //               'label': 'Full',
-  //               'value': 'full'
-  //             },
-  //             {
-  //               'label': 'Middle',
-  //               'value': 'mid'
-  //             }
-  //           ],
-  //           'placeholder': 'Enter the bucket water level',
-  //           'required': true,
-  //           'persist': true,
-  //           'dependents': [
-  //             {
-  //             'form': 'larvae-comp',
-  //             'criteria': {
-  //                 'matches': 'mid|full'
-  //              }
-  //             }
-  //           ],
-  //           'dependencies': []
-  //         },
-  //         {
-  //           'icon': 'alert',
-  //           'name': 'need-not',
-  //           'label': 'Meh?',
-  //           'type': 'text',
-  //           'placeholder': 'Whatever...no fucks to be found',
-  //           'required': false,
-  //           'persist': false,
-  //           'dependents': [{
-  //             'form': 'larvae-comp',
-  //             'criteria': {
-  //               'hasvalue': true
-  //             }
-  //           }],
-  //           'dependencies': []
-  //         },
-  //         {
-  //           'icon': 'alert',
-  //           'name': 'larvae-comp',
-  //           'label': 'Larvae Composition',
-  //           'type': 'select',
-  //           'options': [
-  //             {
-  //               'label': 'Only Triseriatus',
-  //               'value': 'tris'
-  //             },
-  //             {
-  //               'label': 'No Triseriatus',
-  //               'value': 'notris'
-  //             }
-  //           ],
-  //           'placeholder': 'What species exist?',
-  //           'required': true,
-  //           'persist': false,
-  //           'dependents': [],
-  //           'dependencies': [
-  //             {
-  //               'form': 'bucket-number',
-  //               'met': false
-  //             },
-  //             {
-  //               'form': 'bucket-fill',
-  //               'met': false
-  //             },
-  //             {
-  //               'form': 'site-number',
-  //               'met': false
-  //             },
-  //             {
-  //               'form': 'need-not',
-  //               'met': false
-  //             }
-  //           ]
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       'id': '1002',
-  //       'name': 'Form #2',
-  //       'owner': 'Jane D',
-  //       'items': [{
-  //           'icon': 'pricetag',
-  //           'name': 'bucket-number',
-  //           'label': 'Bucket #',
-  //           'type': 'integer',
-  //           'min': 1,
-  //           'max': 10,
-  //           'placeholder': 'Enter the bucket number',
-  //           'required': true,
-  //           'persist': false,
-  //           'dependents': [],
-  //           'dependencies': []
-  //         },
-  //         {
-  //           'icon': 'water',
-  //           'name': 'bucket-fill',
-  //           'label': 'Fill Level',
-  //           'type': 'select',
-  //           'options': [{
-  //               'label': 'Empty',
-  //               'value': 'dry'
-  //             },
-  //             {
-  //               'label': 'Full',
-  //               'value': 'full'
-  //             },
-  //             {
-  //               'label': 'Middle',
-  //               'value': 'mid'
-  //             }
-  //           ],
-  //           'placeholder': 'Enter the bucket water level',
-  //           'required': true,
-  //           'persist': false,
-  //           'dependents': [],
-  //           'dependencies': []
-  //         }
-  //       ]
-  //     }
-  //   ];
-
    }
 
   getForm(id: string): Formx {
@@ -255,7 +78,6 @@ export class FormsService {
 
   getForms(force: boolean) {
 
-    console.log('getting forms. force: ' + force);
     this.storage.get(TOKEN_KEY_NAME).then(token => {
       if (token) {
 

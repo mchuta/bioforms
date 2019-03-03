@@ -16,7 +16,7 @@
   <ion-list lines="inset" mode="md">
     <ion-item *ngFor="let form of formsService.forms" [routerDirection]="'forward'" [routerLink]="['/members/form', form.id]">
       <ion-label>{{form.name}}</ion-label>
-      <ion-note slot="end">{{form.email}}</ion-note>
+      <ion-note slot="end">{{form.owner}}</ion-note>
     </ion-item>
   </ion-list>
 </ion-content>

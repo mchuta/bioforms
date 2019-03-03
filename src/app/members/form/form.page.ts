@@ -2,7 +2,7 @@ import {
   Component
 } from '@angular/core';
 import {
-  ActivatedRoute
+  ActivatedRoute, Router
 } from '@angular/router';
 import {
   FormsService,
@@ -27,8 +27,8 @@ export class FormPage {
 
   constructor(private route: ActivatedRoute, private formService: FormsService,
     private submitterService: SubmitterService,
-    private toastController: ToastController) {
-
+    private toastController: ToastController,
+    private router: Router) {
 
   }
 
@@ -183,9 +183,11 @@ export class FormPage {
       }
     }
 
-    this.submitterService.submitForm(this.formx.id, this.formx.name, items, position);
+    this.submitterService.submitForm(this.formx.id, this.formx.email, this.formx.name, items, position);
 
-    this.presentToast('Successfully submitted', 'primary', 1000);
+    this.presentToastWithCallback('Successfully submitted', 'primary', 2000, () => {
+      this.router.navigate(['members', 'submissions']);
+    });
 
     for (const item of this.formx.items) {
       if (!item.persist) {
@@ -198,21 +200,36 @@ export class FormPage {
   onLocationError = (error: PositionError) => {
 
   }
-  async presentToast(message: string, color: string, duration: number) {
+
+  async presentToastWithCallback(message: string, color: string, duration: number, callback: Function) {
+
     const toast = await this.toastController.create({
       message: message,
-      duration: duration,
-      color: color
+      color: color,
+      showCloseButton: true,
+      closeButtonText: 'View'
     });
+
+    const timeoutHandler = setTimeout( () => { toast.dismiss(); }, duration);
+
+    toast.onDidDismiss().then((data: any) => {
+      clearTimeout(timeoutHandler);
+      console.log('time elapsed', data);
+        if (data.role === 'cancel') {
+          callback();
+        }
+    });
+
     toast.present();
   }
 
-  async presentToastWithOptions() {
+  async presentToast(message: string, color: string, duration: number) {
     const toast = await this.toastController.create({
-      message: 'Click to Close',
+      message: message,
+      color: color,
+      duration: duration,
       showCloseButton: true,
-      position: 'top',
-      closeButtonText: 'Done'
+      closeButtonText: 'Close'
     });
     toast.present();
   }

@@ -108,7 +108,7 @@ export class AppComponent {
           for (const item of this.appPages) {
             item.display = !item.loggedin;
           }
-          
+
           this.formsService.clearForms();
           this.router.navigate(['login']);
 

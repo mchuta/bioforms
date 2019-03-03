@@ -14,13 +14,11 @@ export class AwsService {
 
   authenticate(email: string, password: string): Observable<any> {
     return this.http.post(`${this.url}/authenticate`, {
-      method: 'authenticate',
       email: email,
       password: password
     });
 
   }
-
 
   register(email: string, password: string, first: string, last: string): Observable<any> {
     return this.http.post(`${this.url}/register`, {
@@ -33,9 +31,19 @@ export class AwsService {
   }
 
   getForms(token: string, email: string): Observable<any> {
-    return this.http.get(`${this.url}/forms?email=${email}`, {
+    return this.http.get(`${this.url}/forms`, {
       headers: {
-        'token': token
+        'token': token,
+        'email': email
+      }
+    });
+  }
+
+  submitForms(token: any, submissions: any): Observable<any> {
+    return this.http.post(`${this.url}/submissions`, submissions, {
+      headers: {
+        'token': token.token,
+        'email': token.email
       }
     });
   }

@@ -9,8 +9,8 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list lines="none" mode="md" >
+<ion-content *ngIf="submissions?.length > 0">
+  <ion-list lines="none" mode="md">
     <ion-item *ngFor="let submission of submissions">
       <ion-note slot="start">{{submission.name}}</ion-note>
       <ion-label>{{submission.datestring}}</ion-label>
@@ -23,5 +23,21 @@
       <ion-icon name="cloud-upload"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="danger" (click)="clearStoredSubmissions()">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
+<ion-content *ngIf="submissions?.length === 0" padding>
+  
+  <ion-note>
+    Nothing to submit
+  </ion-note>
+
+  <ion-button padding expand="block" fill="clear" size="default" color="primary" routerLink="/members/forms" routerDirection="root">Forms</ion-button>
 
 </ion-content>
