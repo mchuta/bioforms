@@ -16,6 +16,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { PipeModule} from './pipe/pipe.module';
 
 import { HttpClientModule } from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,7 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     IonicStorageModule.forRoot(),
     HttpClientModule,
-    PipeModule
+    PipeModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     StatusBar,
