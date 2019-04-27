@@ -11,36 +11,45 @@
 
 <ion-content>
 	<ion-list lines="inset" mode="md" >
-		<ion-item *ngFor="let item of formx?.items | callback: isVisible">
-			<ion-grid>
-				<ion-row>
-					<ion-col size="2">
-						<ion-icon [name]="item.icon" size="large"></ion-icon>
-					</ion-col>
-					<ion-col size="8">
-						<ion-label>{{item.label}}</ion-label>
-					</ion-col>
-					<ion-col size="2">
-						<ion-toggle color="primary" [(ngModel)]="item.persist"></ion-toggle>
-					</ion-col>
-				</ion-row>
-				<ion-row>
-					<ion-col size="1">
-						<ion-note *ngIf="item.required" color="danger">*</ion-note>
-					</ion-col>
-					<ion-col size="11" [ngSwitch]="item.type">
-						<ion-select *ngSwitchCase="'select'" [(ngModel)]="item.value" name="{{item.name}}" placeholder="{{item.placeholder}}" interface="action-sheet" (ionChange)="checkDependencies(item)">
-							<ion-select-option *ngFor="let option of item.options" value="{{option.value}}">{{option.label}}</ion-select-option>
-						</ion-select>
-						<ion-input *ngSwitchCase="'integer'" type="number" max="{{item.max}}" min="{{item.min}}" step="1" [(ngModel)]="item.value" (ionChange)="checkDependencies(item)"
-						name="{{item.name}}" placeholder="{{item.placeholder}}"></ion-input>
-						<ion-input *ngSwitchCase="'text'" type="text" [(ngModel)]="item.value" name="{{item.name}}" placeholder="{{item.placeholder}}" (ionChange)="checkDependencies(item)"></ion-input>
-						<ion-input *ngSwitchCase="'real'" type="number" max="{{item.max}}" min="{{item.min}}" [(ngModel)]="item.value" (ionChange)="checkDependencies(item)"
-						name="{{item.name}}" placeholder="{{item.placeholder}}"></ion-input>
-					</ion-col>
-				</ion-row>
-			</ion-grid>
-		</ion-item>
+		<ion-item-sliding *ngFor="let item of formx?.items | callback: isVisible">
+			<ion-item>
+				<ion-grid>
+					<ion-row>
+						<ion-col size="2">
+							<ion-icon [name]="item.icon" size="large" color="{{item.persist? 'secondary': 'none'}}"></ion-icon>
+						</ion-col>
+						<ion-col size="10">
+							<ion-label color="{{item.required? 'danger': 'default'}}">{{item.label}}</ion-label>
+						</ion-col>
+					</ion-row>
+					<ion-row>				
+						<ion-col size="12" [ngSwitch]="item.type">
+							<ion-select *ngSwitchCase="'select'" [(ngModel)]="item.value" name="{{item.name}}" placeholder="{{item.placeholder}}" interface="action-sheet" (ionChange)="checkDependencies(item)">
+								<ion-select-option *ngFor="let option of item.options" value="{{option.value}}">
+									{{option.label}}
+								</ion-select-option>
+							</ion-select>
+							<ion-input *ngSwitchCase="'integer'" type="number" max="{{item.max}}" min="{{item.min}}" step="1" [(ngModel)]="item.value" (ionChange)="checkDependencies(item)"
+								name="{{item.name}}" placeholder="{{item.placeholder}}">
+							</ion-input>
+							<ion-input *ngSwitchCase="'text'" type="text" [(ngModel)]="item.value" name="{{item.name}}" placeholder="{{item.placeholder}}" (ionChange)="checkDependencies(item)"></ion-input>
+							<ion-input *ngSwitchCase="'real'" type="number" max="{{item.max}}" min="{{item.min}}" [(ngModel)]="item.value" (ionChange)="checkDependencies(item)"
+								name="{{item.name}}" placeholder="{{item.placeholder}}">
+							</ion-input>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-item>
+			<ion-item-options side="end">
+				<ion-item-option color="secondary">
+					<ion-toggle color="dark" [(ngModel)]="item.persist" ></ion-toggle>
+				</ion-item-option>
+			</ion-item-options>
+		</ion-item-sliding>
 	</ion-list>
-	<ion-button expand="block" color="primary" type="button" (click)="saveAndReload()">Submit</ion-button>
+	<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+		<ion-fab-button color="primary" (click)="saveAndReload()">
+			<ion-icon name="send"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
 </ion-content>

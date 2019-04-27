@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { Events } from '@ionic/angular';
+import { Events, IonItemSliding } from '@ionic/angular';
 import { AwsService } from './aws.service';
-import { EmailValidator } from '@angular/forms';
 
 
 export interface SubmissionItem {
@@ -86,6 +85,32 @@ export class SubmitterService {
        this.storage.set(`${token.email}-submissions`, []);
        this.events.publish('submissions-pushed', []);
        this.events.publish('submissions-changed', 0);
+    });
+  }
+
+  delete(submission: Submission) {
+
+    const that = this;
+
+    this.storage.get(TOKEN_KEY_NAME).then(token => {
+      that.storage.get(`${token.email}-submissions`).then((submissions: Submission[]) => {
+
+        const newSubmissions: Submission[] = [];
+
+        for (const sub of submissions) {
+          if ((sub.form !== submission.form) || (sub.timestamp !== submission.timestamp)) {
+            newSubmissions.push(sub);
+          }
+        }
+
+        this.storage.set(`${token.email}-submissions`, newSubmissions)/*.then(_ => {
+          that.events.publish('submissions-pushed', newSubmissions);
+        })*/;
+
+        that.events.publish('submissions-changed', newSubmissions.length);
+        // that.events.publish('submissions-pushed', newSubmissions);
+
+      });
     });
   }
 

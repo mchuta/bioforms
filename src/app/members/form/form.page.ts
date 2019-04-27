@@ -13,7 +13,7 @@ import {
   SubmitterService
 } from '../../services/submitter.service';
 import {
-  ToastController
+  ToastController, IonItemSliding
 } from '@ionic/angular';
 
 @Component({
@@ -55,6 +55,8 @@ export class FormPage {
 
       if (formitem.dependents.length > 0) {
         for (const dependent of formitem.dependents) {
+
+          console.log(dependent);
 
           for (const form of this.formx.items) {
             if (form.name === dependent.form) {
@@ -100,6 +102,8 @@ export class FormPage {
               if (dependent.criteria.matches) {
 
                 const rex = new RegExp(dependent.criteria.matches);
+
+                console.log(rex);
                 if (rex.test(formitem.value)) {
                   requirementsMet = requirementsMet && true;
                 } else {
@@ -124,7 +128,7 @@ export class FormPage {
     const failedRequirements: string[] = [];
 
     for (const item of this.formx.items) {
-      if (item.required && (!item.value) && (this.isVisible(item))) {
+      if (item.required && (item.value === null) && (this.isVisible(item))) {
         failedRequirements.push('"' + item.label + '" is required');
         continue;
       }
@@ -170,12 +174,16 @@ export class FormPage {
 
   }
 
+  // hideSlider(slider: IonItemSliding) {
+  //   slider.close();
+  // }
+
   onLocationSuccess = (position: Position) => {
 
     const items = [];
 
     for (const item of this.formx.items) {
-      if (item.value) {
+      if (item.value !== null) {
         items.push({
           'name': item.name,
           'value': item.value

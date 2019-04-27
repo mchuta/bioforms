@@ -7,6 +7,7 @@ import { SubmitterService } from './services/submitter.service';
 import { AuthenticationService } from './services/authentication.service';
 import { Router } from '@angular/router';
 import { FormsService } from './services/forms-service.service';
+import { Network } from '@ionic-native/network/ngx';
 
 
 interface PageItem {
@@ -74,7 +75,8 @@ export class AppComponent {
     private submitterService: SubmitterService,
     private authenticationService: AuthenticationService,
     private router: Router,
-    private formsService: FormsService
+    private formsService: FormsService,
+    private network: Network
   ) {
     this.initializeApp();
 
@@ -86,6 +88,21 @@ export class AppComponent {
         }
       }
     });
+
+    console.log(this.network.type);
+
+    this.network.onDisconnect().subscribe(() => {
+      console.log('disconnected');
+    });
+
+    this.network.onConnect().subscribe(() => {
+      console.log('connected');
+    });
+
+    this.network.onchange().subscribe((event) => {
+      console.log('change');
+      console.log(event);
+    })
 
   }
 

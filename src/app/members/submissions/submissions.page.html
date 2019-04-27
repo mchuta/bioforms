@@ -1,21 +1,28 @@
 <ion-header>
-	<ion-toolbar>
-		<ion-buttons slot="start">
-			<ion-menu-button></ion-menu-button>
-		</ion-buttons>
-		<ion-title>
-			Submissions
-		</ion-title>
-	</ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Submissions
+    </ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="submissions?.length > 0">
   <ion-list lines="none" mode="md">
-    <ion-item *ngFor="let submission of submissions">
-      <ion-note slot="start">{{submission.name}}</ion-note>
-      <ion-label>{{submission.datestring}}</ion-label>
-      <ion-badge slot="end" color="medium">{{submission.items.length}}</ion-badge>
-    </ion-item>
+    <ion-item-sliding *ngFor="let submission of submissions">
+      <ion-item>
+        <ion-note slot="start">{{submission.name}}</ion-note>
+        <ion-label>{{submission.datestring}}</ion-label>
+        <ion-badge slot="end" color="medium">{{submission.items.length}}</ion-badge>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger">
+          <ion-icon slot="icon-only" name="trash" (click)="deleteSubmission(submission)"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
@@ -33,11 +40,12 @@
 </ion-content>
 
 <ion-content *ngIf="submissions?.length === 0" padding>
-  
+
   <ion-note>
     Nothing to submit
   </ion-note>
 
-  <ion-button padding expand="block" fill="clear" size="default" color="primary" routerLink="/members/forms" routerDirection="root">Forms</ion-button>
+  <ion-button padding expand="block" fill="clear" size="default" color="primary" routerLink="/members/forms"
+    routerDirection="root">Forms</ion-button>
 
 </ion-content>

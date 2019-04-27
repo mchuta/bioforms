@@ -16,8 +16,10 @@ export class SubmissionsPage implements OnInit {
 
   private submissions: Submission[];
 
-  constructor(private storage: Storage, private submitterService: SubmitterService,
-    private events: Events, private loadingController: LoadingController,
+  constructor(private storage: Storage, 
+    private submitterService: SubmitterService,
+    private events: Events, 
+    private loadingController: LoadingController,
     private router: Router) {
 
     this.events.subscribe('submissions-pushed', (submissions: Submission[]) => {
@@ -52,6 +54,11 @@ export class SubmissionsPage implements OnInit {
 
   clearStoredSubmissions() {
     this.submitterService.clearStored();
+  }
+
+  deleteSubmission(submission: Submission) {
+
+    this.submitterService.delete(submission);
   }
 
   async presentLoadingWithOptions() {
