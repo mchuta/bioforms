@@ -1,5 +1,5 @@
 import {
-  Component
+  Component, Input
 } from '@angular/core';
 import {
   ActivatedRoute, Router
@@ -23,7 +23,10 @@ import {
 })
 export class FormPage {
 
+
   private formx: Formx;
+
+  public submissions = 0;
 
   constructor(private route: ActivatedRoute, private formService: FormsService,
     private submitterService: SubmitterService,
@@ -55,8 +58,6 @@ export class FormPage {
 
       if (formitem.dependents.length > 0) {
         for (const dependent of formitem.dependents) {
-
-          console.log(dependent);
 
           for (const form of this.formx.items) {
             if (form.name === dependent.form) {
@@ -103,7 +104,6 @@ export class FormPage {
 
                 const rex = new RegExp(dependent.criteria.matches);
 
-                console.log(rex);
                 if (rex.test(formitem.value)) {
                   requirementsMet = requirementsMet && true;
                 } else {
@@ -134,7 +134,8 @@ export class FormPage {
     const failedRequirements: string[] = [];
 
     for (const item of this.formx.items) {
-      if (item.required && (item.value === null) && (this.isVisible(item))) {
+
+      if (item.required && ((item.value === null) || (item.value === undefined) || (item.value === '')) && (this.isVisible(item))) {
         failedRequirements.push('"' + item.label + '" is required');
         continue;
       }
@@ -172,9 +173,8 @@ export class FormPage {
       );
 
     } else {
-      console.log(failedRequirements);
 
-      this.presentToast(failedRequirements.join('\n'), 'danger', 2000);
+      this.presentToast(failedRequirements.join('\n'), 'danger', 2000, 'top');
 
     }
 
@@ -199,9 +199,11 @@ export class FormPage {
 
     this.submitterService.submitForm(this.formx.id, this.formx.email, this.formx.name, items, position);
 
-    this.presentToastWithCallback('Successfully submitted', 'primary', 1500, () => {
-      this.router.navigate(['members', 'submissions']);
-    });
+    // this.presentToastWithCallback('Successfully submitted', 'primary', 1500, () => {
+    //   this.router.navigate(['members', 'submissions']);
+    // });
+
+    this.submissions += 1;
 
     for (const item of this.formx.items) {
       if (!item.persist) {
@@ -237,13 +239,14 @@ export class FormPage {
     toast.present();
   }
 
-  async presentToast(message: string, color: string, duration: number) {
+  async presentToast(message: string, color: string, duration: number, position?: 'top' | 'bottom' | 'middle') {
     const toast = await this.toastController.create({
       message: message,
       color: color,
       duration: duration,
       showCloseButton: true,
-      closeButtonText: 'Close'
+      closeButtonText: 'Close',
+      position: position
     });
     toast.present();
   }

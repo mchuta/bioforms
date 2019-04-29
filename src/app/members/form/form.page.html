@@ -6,6 +6,12 @@
 		<ion-title>
 			{{formx?.name}}
 		</ion-title>
+		<ion-buttons slot="end">
+			<ion-button color="{{submissions === 0? 'dark': 'primary'}}" [routerDirection]="'root'" [routerLink]="['/members/submissions']">
+				<ion-icon name="cloud-upload"></ion-icon>
+				<ion-label *ngIf="submissions > 0">&nbsp;{{submissions}}</ion-label>
+			</ion-button>
+		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
 
