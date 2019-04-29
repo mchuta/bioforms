@@ -33,6 +33,7 @@
 								name="{{item.name}}" placeholder="{{item.placeholder}}">
 							</ion-input>
 							<ion-input *ngSwitchCase="'text'" type="text" [(ngModel)]="item.value" name="{{item.name}}" placeholder="{{item.placeholder}}" (ionChange)="checkDependencies(item)"></ion-input>
+							<ion-textarea mode="md" *ngSwitchCase="'multi'" type="text" [(ngModel)]="item.value" name="{{item.name}}" placeholder="{{item.placeholder}}" (ionChange)="checkDependencies(item)"></ion-textarea>
 							<ion-input *ngSwitchCase="'real'" type="number" max="{{item.max}}" min="{{item.min}}" [(ngModel)]="item.value" (ionChange)="checkDependencies(item)"
 								name="{{item.name}}" placeholder="{{item.placeholder}}">
 							</ion-input>
