@@ -15,8 +15,9 @@ const TOKEN_KEY_NAME = 'auth-token';
 export class SubmissionsPage implements OnInit {
 
   private submissions: Submission[];
+  private showDelete = false;
 
-  constructor(private storage: Storage, 
+  constructor(private storage: Storage,
     private submitterService: SubmitterService,
     private events: Events, 
     private loadingController: LoadingController,
@@ -30,6 +31,11 @@ export class SubmissionsPage implements OnInit {
       if (submissions.length === 0) {
         this.router.navigate(['members', 'forms']);
       }
+    });
+
+    this.events.subscribe('submissions-updated', (submissions: Submission[]) => {
+      console.log('submission-changed caught');
+      this.submissions = submissions;
     });
 
     this.events.subscribe('submission-failed', (error) => {
@@ -47,6 +53,10 @@ export class SubmissionsPage implements OnInit {
     });
   }
 
+  toggleDelete() {
+    this.showDelete = !this.showDelete;
+  }
+
   initiateUpload() {
     this.presentLoadingWithOptions();
     this.submitterService.pushForms();
@@ -57,7 +67,6 @@ export class SubmissionsPage implements OnInit {
   }
 
   deleteSubmission(submission: Submission) {
-
     this.submitterService.delete(submission);
   }
 

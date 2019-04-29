@@ -1,51 +1,63 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      Submissions
-    </ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>
+			Submissions
+		</ion-title>
+		<ion-buttons slot="end">
+			<ion-button color="{{showDelete? 'primary' : 'dark'}}" (click)="toggleDelete()">
+				<ion-icon slot="icon-only" name="trash"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="submissions?.length > 0">
-  <ion-list lines="none" mode="md">
-    <ion-item-sliding *ngFor="let submission of submissions">
-      <ion-item>
-        <ion-note slot="start">{{submission.name}}</ion-note>
-        <ion-label>{{submission.datestring}}</ion-label>
-        <ion-badge slot="end" color="medium">{{submission.items.length}}</ion-badge>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option color="danger">
-          <ion-icon slot="icon-only" name="trash" (click)="deleteSubmission(submission)"></ion-icon>
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
+	<ion-list lines="none" mode="md">
+		<ion-item *ngFor="let submission of submissions">
+			<ion-grid>
+				<ion-row>
+					<ion-col size="5">
+						{{submission.name}}
+					</ion-col>
+					<ion-col size="{{showDelete? 5: 6}}">
+						{{submission.datestring}}
+					</ion-col>
+					<ion-col size="{{showDelete? 2: 1}}">
+						<ion-badge *ngIf="!showDelete" color="medium">{{submission.items.length}}</ion-badge>
+						<ion-button *ngIf="showDelete" size="small" color="danger"
+							(click)="deleteSubmission(submission)">
+							<ion-icon slot="icon-only" size="small" name="trash"></ion-icon>
+						</ion-button>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-item>
+	</ion-list>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="primary" (click)="initiateUpload()">
-      <ion-icon name="cloud-upload"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+	<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+		<ion-fab-button color="primary" (click)="initiateUpload()">
+			<ion-icon name="cloud-upload"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
 
-  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-    <ion-fab-button color="danger" (click)="clearStoredSubmissions()">
-      <ion-icon name="trash"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+	<ion-fab vertical="bottom" horizontal="start" slot="fixed">
+		<ion-fab-button color="danger" (click)="clearStoredSubmissions()">
+			<ion-icon name="trash"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
 
 </ion-content>
 
 <ion-content *ngIf="submissions?.length === 0" padding>
 
-  <ion-note>
-    Nothing to submit
-  </ion-note>
+	<ion-note>
+		Nothing to submit
+	</ion-note>
 
-  <ion-button padding expand="block" fill="clear" size="default" color="primary" routerLink="/members/forms"
-    routerDirection="root">Forms</ion-button>
+	<ion-button padding expand="block" fill="clear" size="default" color="primary" routerLink="/members/forms"
+		routerDirection="root">Forms</ion-button>
 
 </ion-content>

@@ -1,7 +1,7 @@
 <ion-header>
 	<ion-toolbar>
 		<ion-buttons slot="start">
-			<ion-back-button [routerDirection]="'backward'" [routerLink]="['/members/forms']"></ion-back-button>
+			<ion-back-button (click)="closeAllSliders(list)" [routerDirection]="'backward'" [routerLink]="['/members/forms']"></ion-back-button>
 		</ion-buttons>
 		<ion-title>
 			{{formx?.name}}
@@ -10,8 +10,8 @@
 </ion-header>
 
 <ion-content>
-	<ion-list lines="inset" mode="md" >
-		<ion-item-sliding *ngFor="let item of formx?.items | callback: isVisible">
+	<ion-list lines="inset" mode="md" #list>
+		<ion-item-sliding #slidingItem *ngFor="let item of formx?.items | callback: isVisible">
 			<ion-item>
 				<ion-grid>
 					<ion-row>
@@ -42,13 +42,13 @@
 			</ion-item>
 			<ion-item-options side="end">
 				<ion-item-option color="secondary">
-					<ion-toggle color="dark" [(ngModel)]="item.persist" ></ion-toggle>
+					<ion-toggle color="dark" [(ngModel)]="item.persist" (click)="hideSlider(slidingItem)"></ion-toggle>
 				</ion-item-option>
 			</ion-item-options>
 		</ion-item-sliding>
 	</ion-list>
 	<ion-fab vertical="bottom" horizontal="end" slot="fixed">
-		<ion-fab-button color="primary" (click)="saveAndReload()">
+		<ion-fab-button color="primary" (click)="saveAndReload(list)">
 			<ion-icon name="send"></ion-icon>
 		</ion-fab-button>
 	</ion-fab>

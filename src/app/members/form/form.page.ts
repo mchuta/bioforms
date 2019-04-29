@@ -13,7 +13,7 @@ import {
   SubmitterService
 } from '../../services/submitter.service';
 import {
-  ToastController, IonItemSliding
+  ToastController, IonItemSliding, IonList
 } from '@ionic/angular';
 
 @Component({
@@ -123,7 +123,13 @@ export class FormPage {
       }
   }
 
-  saveAndReload() {
+  closeAllSliders(list: IonList) {
+    list.closeSlidingItems();
+  }
+
+  saveAndReload(list: IonList) {
+
+    list.closeSlidingItems();
 
     const failedRequirements: string[] = [];
 
@@ -174,9 +180,9 @@ export class FormPage {
 
   }
 
-  // hideSlider(slider: IonItemSliding) {
-  //   slider.close();
-  // }
+  hideSlider(slider: IonItemSliding) {
+    slider.close();
+  }
 
   onLocationSuccess = (position: Position) => {
 
@@ -193,7 +199,7 @@ export class FormPage {
 
     this.submitterService.submitForm(this.formx.id, this.formx.email, this.formx.name, items, position);
 
-    this.presentToastWithCallback('Successfully submitted', 'primary', 2000, () => {
+    this.presentToastWithCallback('Successfully submitted', 'primary', 1500, () => {
       this.router.navigate(['members', 'submissions']);
     });
 

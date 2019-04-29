@@ -103,12 +103,10 @@ export class SubmitterService {
           }
         }
 
-        this.storage.set(`${token.email}-submissions`, newSubmissions)/*.then(_ => {
-          that.events.publish('submissions-pushed', newSubmissions);
-        })*/;
-
-        that.events.publish('submissions-changed', newSubmissions.length);
-        // that.events.publish('submissions-pushed', newSubmissions);
+        this.storage.set(`${token.email}-submissions`, newSubmissions).then(_ => {
+          that.events.publish('submissions-changed', newSubmissions.length);
+          that.events.publish('submissions-updated', newSubmissions);
+        });
 
       });
     });
